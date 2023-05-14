@@ -1,9 +1,101 @@
 <template>
-  <div class="text-2xl">Hello, World!</div>
+  <div class="w-full h-screen">
+    <transition name="fade">
+      <div
+        v-if="env.screens.start"
+        class="bg-gradient w-full h-full flex justify-center items-center"
+      >
+        <h1 class="text-white text-center text-6xl font-bold text-animation">
+          Стани Богат
+        </h1>
+      </div>
+    </transition>
+    <transition name="fade">
+      <div
+        v-if="env.screens.start === false && env.screens.theTrivia"
+        class="w-full h-full"
+      >
+        <the-trivia />
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
+// stores
+import { useEnvStore } from "../stores/env";
+
+// components
+import TheTrivia from "../components/the-trivia/TheTrivia.vue";
+
 export default {
   name: "InitializeApp",
+  components: {
+    TheTrivia,
+  },
+  setup() {
+    const env = useEnvStore();
+
+    const functions = {
+      start() {
+        // hide the initial screen after 3 seconds
+        setTimeout(() => {
+          env.screens.start = false;
+
+          // show the trivia view after 1 second
+          setTimeout(() => {
+            env.screens.theTrivia = true;
+          }, 1000);
+        }, 3000);
+      },
+    };
+
+    functions.start();
+
+    return { env };
+  },
 };
 </script>
+
+<style>
+.bg-gradient {
+  background: radial-gradient(#0f00f0, #0f0079);
+}
+.text-animation {
+  animation: text-animation 3000ms ease forwards;
+}
+@keyframes text-animation {
+  0% {
+    opacity: 0.5;
+    transform: scale(0);
+  }
+  20% {
+    opacity: 0.9;
+    transform: scale(0.9);
+  }
+  60% {
+    opacity: 0.92;
+    transform: scale(0.92);
+    transform: rotateZ(10deg);
+  }
+  70% {
+    opacity: 0.94;
+    transform: scale(0.94);
+    transform: rotateZ(-10deg);
+  }
+  80% {
+    opacity: 0.96;
+    transform: scale(0.96);
+    transform: rotateZ(10deg);
+  }
+  90% {
+    opacity: 0.98;
+    transform: scale(0.98);
+    transform: rotateZ(-10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+</style>
