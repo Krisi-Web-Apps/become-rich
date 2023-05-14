@@ -140,6 +140,28 @@ export const useQuestionStore = defineStore("question", {
           },
         ],
       },
+      {
+        title:
+          "Кое от следните е вид възобновяема енергия?",
+        answers: [
+          {
+            text: "Въглища",
+            is_correct: false,
+          },
+          {
+            text: "Природен газ",
+            is_correct: false,
+          },
+          {
+            text: "Слънчева",
+            is_correct: true,
+          },
+          {
+            text: "Петрол",
+            is_correct: false,
+          },
+        ],
+      },
     ],
     item: {},
   }),
@@ -178,7 +200,9 @@ export const useQuestionStore = defineStore("question", {
     },
     restartTrivia() {
       const env = useEnvStore();
+      const moneyBar = useMoneyBarStore();
       env.screens.theEndTrivia = false;
+      moneyBar.earnedMoney = 0;
       this.currentQuestionIndex = -1;
       setTimeout(() => {
         this.isEnd = false;
