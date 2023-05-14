@@ -6,6 +6,8 @@ export const useQuestionStore = defineStore("question", {
     currentQuestionIndex: -1,
     isStart: false,
     isEnd: false,
+    additionalClass: "",
+    selectedAnswerIndex: -1,
     items: [
       {
         title: "Кой е най-големият орган в човешкото тяло?",
@@ -50,7 +52,8 @@ export const useQuestionStore = defineStore("question", {
         ],
       },
       {
-        title: "Как се нарича процесът, при който растенията превръщат слънчевата светлина, водата и въглеродния диоксид в енергия?",
+        title:
+          "Как се нарича процесът, при който растенията превръщат слънчевата светлина, водата и въглеродния диоксид в енергия?",
         answers: [
           {
             text: "Фотосинтеза",
@@ -75,6 +78,7 @@ export const useQuestionStore = defineStore("question", {
   }),
   actions: {
     getNextItem() {
+      this.correctAnimation = -1;
       if (this.currentQuestionIndex + 1 >= this.items.length) {
         this.end();
         return;
@@ -88,6 +92,28 @@ export const useQuestionStore = defineStore("question", {
     },
     end() {
       this.isEnd = true;
+    },
+    selectAnswer(index) {
+      this.selectedAnswerIndex = index;
+      this.additionalClass = "bg-yellow-500";
+
+      setTimeout(() => {
+        if (this.item.answers[index].is_correct === true) this.correctAnswer();
+        else this.wrongAnswer();
+      }, 1000);
+    },
+    correctAnswer() {
+      this.additionalClass = "correct-answer";
+      setTimeout(() => {
+        this.getNextItem();
+        this.additionalClass = "";
+        this.selectedAnswerIndex = -1;
+      }, 3000);
+    },
+    wrongAnswer() {
+      this.additionalClass = "wrong-answer";
+      setTimeout(() => this.additionalClass = "", 1000);
+      setTimeout(() => this.end(), 2000);
     },
   },
 });

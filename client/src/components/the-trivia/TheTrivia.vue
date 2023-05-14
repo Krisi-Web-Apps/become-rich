@@ -4,17 +4,17 @@
       class="w-9/12 h-full bg-cover"
       :style="{ backgroundImage: `url(${backgroundUrl})` }"
     >
-    <transition name="fade">
-      <div
-        v-if="question.item && question.isStart"
-        class="w-full h-full flex flex-col justify-end pb-20"
-      >
-        <div class="container mx-auto px-10">
-          <display-question :title="question.item.title" />
-          <display-answers :answers="question.item.answers" />
+      <transition name="fade">
+        <div
+          v-if="question.item && question.isStart && question.isEnd === false"
+          class="w-full h-full flex flex-col justify-end pb-20"
+        >
+          <div class="container mx-auto px-10">
+            <display-question :title="question.item.title" />
+            <display-answers :answers="question.item.answers" />
+          </div>
         </div>
-      </div>
-    </transition>
+      </transition>
     </div>
     <div class="w-3/12">Money bar</div>
   </div>
