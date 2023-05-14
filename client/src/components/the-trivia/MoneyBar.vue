@@ -1,18 +1,19 @@
 <template>
-  <div class="bg-primary/95 w-full h-full py-2 border-2 shadow border-primary">
-    <ul class="flex flex-col gap-1">
+  <div class="bg-primary/90 w-full h-full py-2 border-2 shadow border-primary">
+    <ul class="flex flex-col gap-2">
       <li
         v-for="(item, index) in moneyBar.getReversedItems"
         :key="index"
-        class="text-white bg-primary py-1 px-4"
+        class="py-1 px-4 flex gap-5 shadow transition-all"
         :class="
           question.currentQuestionIndex ===
           Math.abs(index - moneyBar.items.length + 1)
             ? 'bg-white text-primary font-bold'
-            : null
+            : 'text-white bg-primary'
         "
       >
-        <span>{{ item.money.toLocaleString("en-US") }} лв.</span>
+        <div class="w-10">{{ item.id }}</div>
+        <div>{{ item.money.toLocaleString("en-US") }} лв.</div>
       </li>
     </ul>
   </div>

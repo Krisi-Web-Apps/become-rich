@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useEnvStore } from "./env";
 
 export const useQuestionTimerStore = defineStore("questionTimer", {
   state: () => ({
@@ -7,7 +8,13 @@ export const useQuestionTimerStore = defineStore("questionTimer", {
   }),
   actions: {
     start() {
-      this.interval = setInterval(() => this.seconds--, 1000);
+      this.interval = setInterval(() => {
+        if (this.seconds <= 0) {
+          const question = useQuestionStore();
+          question.end();
+        }
+        this.seconds--;
+      }, 1000);
     },
     stop() {
       clearInterval(this.interval);
@@ -28,24 +35,24 @@ export const useMoneyBarStore = defineStore("moneyBar", {
     loading: false,
     earnedMoney: 0,
     items: [
-      { money: 50 },
-      { money: 100 },
-      { money: 150 },
-      { money: 200 },
-      { money: 250 },
-      { money: 500 },
-      { money: 750 },
-      { money: 1000 },
-      { money: 2000 },
-      { money: 2500 },
-      { money: 5000 },
-      { money: 7500 },
-      { money: 10000 },
-      { money: 12500 },
-      { money: 15000 },
-      { money: 25000 },
-      { money: 50000 },
-      { money: 100000 },
+      { id: 1, money: 50 },
+      { id: 2, money: 100 },
+      { id: 3, money: 150 },
+      { id: 4, money: 200 },
+      { id: 5, money: 250 },
+      { id: 6, money: 500 },
+      { id: 7, money: 750 },
+      { id: 8, money: 1000 },
+      { id: 9, money: 2000 },
+      { id: 10, money: 2500 },
+      { id: 11, money: 5000 },
+      { id: 12, money: 7500 },
+      { id: 13, money: 10000 },
+      { id: 14, money: 12500 },
+      { id: 15, money: 15000 },
+      { id: 16, money: 25000 },
+      { id: 17, money: 50000 },
+      { id: 18, money: 100000 },
     ],
   }),
   getters: {
@@ -56,8 +63,8 @@ export const useMoneyBarStore = defineStore("moneyBar", {
   actions: {
     calcMoney(index) {
       this.earnedMoney = this.items.reverse()[index].money;
-    }
-  }
+    },
+  },
 });
 
 export const useQuestionStore = defineStore("question", {
@@ -139,13 +146,22 @@ export const useQuestionStore = defineStore("question", {
   actions: {
     getNextItem() {
       this.correctAnimation = -1;
+
+      // check if end question
       if (this.currentQuestionIndex + 1 >= this.items.length) {
         this.end();
         return;
       }
-      this.currentQuestionIndex++;
-      this.item = this.items[this.currentQuestionIndex];
 
+      this.currentQuestionIndex++;
+
+      // get next question
+      let nextItem = this.items[this.currentQuestionIndex];
+      const env = useEnvStore();
+      nextItem.answers = env.shuffle(nextItem.answers);
+      this.item = nextItem;
+
+      // reset timer
       const timer = useQuestionTimerStore();
       timer.reset();
     },
@@ -157,8 +173,18 @@ export const useQuestionStore = defineStore("question", {
       this.isEnd = true;
       const timer = useQuestionTimerStore();
       timer.end();
-      const moneyBar = useMoneyBarStore();
-      moneyBar.calcMoney();
+      const env = useEnvStore();
+      setTimeout(() => (env.screens.theEndTrivia = true), 1000);
+    },
+    restartTrivia() {
+      const env = useEnvStore();
+      env.screens.theEndTrivia = false;
+      this.currentQuestionIndex = -1;
+      setTimeout(() => {
+        this.isEnd = false;
+        env.screens.theTrivia = true;
+        this.start();
+      }, 1000);
     },
     selectAnswer(index) {
       const timer = useQuestionTimerStore();
@@ -185,7 +211,10 @@ export const useQuestionStore = defineStore("question", {
     },
     wrongAnswer() {
       this.additionalClass = "wrong-answer";
-      setTimeout(() => (this.additionalClass = ""), 1000);
+      setTimeout(() => {
+        this.additionalClass = "";
+        this.selectedAnswerIndex = -1;
+      }, 1000);
       setTimeout(() => this.end(), 2000);
     },
   },

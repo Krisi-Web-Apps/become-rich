@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-2 gap-5 mt-20 px-20">
+  <div class="grid md:grid-cols-2 gap-5 mt-5 md:mt-20 px-5 md:px-20">
     <button
       v-for="(item, index) in props.answers"
       :key="index"
