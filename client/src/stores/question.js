@@ -1,5 +1,65 @@
 import { defineStore } from "pinia";
 
+export const useQuestionTimerStore = defineStore("questionTimer", {
+  state: () => ({
+    interval: null,
+    seconds: 30,
+  }),
+  actions: {
+    start() {
+      this.interval = setInterval(() => this.seconds--, 1000);
+    },
+    stop() {
+      clearInterval(this.interval);
+    },
+    reset() {
+      this.seconds = 30;
+      this.start();
+    },
+    end() {
+      clearInterval(this.interval);
+      this.interval = null;
+    },
+  },
+});
+
+export const useMoneyBarStore = defineStore("moneyBar", {
+  state: () => ({
+    loading: false,
+    earnedMoney: 0,
+    items: [
+      { money: 50 },
+      { money: 100 },
+      { money: 150 },
+      { money: 200 },
+      { money: 250 },
+      { money: 500 },
+      { money: 750 },
+      { money: 1000 },
+      { money: 2000 },
+      { money: 2500 },
+      { money: 5000 },
+      { money: 7500 },
+      { money: 10000 },
+      { money: 12500 },
+      { money: 15000 },
+      { money: 25000 },
+      { money: 50000 },
+      { money: 100000 },
+    ],
+  }),
+  getters: {
+    getReversedItems: (state) => {
+      return state.items.reverse();
+    },
+  },
+  actions: {
+    calcMoney(index) {
+      this.earnedMoney = this.items.reverse()[index].money;
+    }
+  }
+});
+
 export const useQuestionStore = defineStore("question", {
   state: () => ({
     loading: false,
@@ -85,6 +145,9 @@ export const useQuestionStore = defineStore("question", {
       }
       this.currentQuestionIndex++;
       this.item = this.items[this.currentQuestionIndex];
+
+      const timer = useQuestionTimerStore();
+      timer.reset();
     },
     start() {
       this.getNextItem();
@@ -92,8 +155,15 @@ export const useQuestionStore = defineStore("question", {
     },
     end() {
       this.isEnd = true;
+      const timer = useQuestionTimerStore();
+      timer.end();
+      const moneyBar = useMoneyBarStore();
+      moneyBar.calcMoney();
     },
     selectAnswer(index) {
+      const timer = useQuestionTimerStore();
+      timer.stop();
+
       this.selectedAnswerIndex = index;
       this.additionalClass = "bg-yellow-500";
 
@@ -103,6 +173,9 @@ export const useQuestionStore = defineStore("question", {
       }, 1000);
     },
     correctAnswer() {
+      const moneyBar = useMoneyBarStore();
+      moneyBar.calcMoney(this.currentQuestionIndex);
+
       this.additionalClass = "correct-answer";
       setTimeout(() => {
         this.getNextItem();
@@ -112,7 +185,7 @@ export const useQuestionStore = defineStore("question", {
     },
     wrongAnswer() {
       this.additionalClass = "wrong-answer";
-      setTimeout(() => this.additionalClass = "", 1000);
+      setTimeout(() => (this.additionalClass = ""), 1000);
       setTimeout(() => this.end(), 2000);
     },
   },

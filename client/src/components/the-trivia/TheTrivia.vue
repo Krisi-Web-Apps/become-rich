@@ -4,19 +4,34 @@
       class="w-9/12 h-full bg-cover"
       :style="{ backgroundImage: `url(${backgroundUrl})` }"
     >
-      <transition name="fade">
+      <transition-group name="fade">
         <div
           v-if="question.item && question.isStart && question.isEnd === false"
           class="w-full h-full flex flex-col justify-end pb-20"
         >
           <div class="container mx-auto px-10">
+            <question-timer class="absolute left-10 top-10" />
             <display-question :title="question.item.title" />
             <display-answers :answers="question.item.answers" />
           </div>
         </div>
-      </transition>
+        <div
+          v-else-if="question.isStart === true && question.isEnd === true"
+          class="w-full h-full"
+        >
+          <div class="w-full h-full flex justify-center items-center">
+            <div
+              class="bg-primary py-5 px-5 border-4 text-white font-bold text-4xl"
+            >
+              Ти спечели: {{ moneyBar.earnedMoney }} лв.
+            </div>
+          </div>
+        </div>
+      </transition-group>
     </div>
-    <div class="w-3/12">Money bar</div>
+    <div class="w-3/12">
+      <money-bar />
+    </div>
   </div>
 </template>
 
@@ -24,7 +39,7 @@
 import { ref } from "vue";
 
 // stores
-import { useQuestionStore } from "../../stores/question";
+import { useQuestionStore, useMoneyBarStore } from "../../stores/question";
 
 // background images
 import backgroundUrl1 from "../../assets/backgrounds/background-1.jpg";
@@ -35,16 +50,21 @@ const backgrounds = [backgroundUrl1, backgroundUrl2];
 // components
 import DisplayQuestion from "./DisplayQuestion.vue";
 import DisplayAnswers from "./DisplayAnswers.vue";
+import QuestionTimer from "./QuestionTimer.vue";
+import MoneyBar from "./MoneyBar.vue";
 
 export default {
   name: "TheTrivia",
   components: {
     DisplayQuestion,
     DisplayAnswers,
+    QuestionTimer,
+    MoneyBar,
   },
   setup() {
     const backgroundUrl = ref(null);
     const question = useQuestionStore();
+    const moneyBar = useMoneyBarStore();
 
     const functions = {
       start(ms) {
@@ -62,13 +82,7 @@ export default {
 
     functions.start(1000);
 
-    return { question, backgroundUrl };
+    return { question, moneyBar, backgroundUrl };
   },
 };
 </script>
-
-<style>
-.the-questions {
-  @apply bg-cover;
-}
-</style>
