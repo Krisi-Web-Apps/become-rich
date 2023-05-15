@@ -5,4 +5,6 @@ router.get("/:id", questions.get.byId);
 
 router.post("/", questions.post.save);
 
+router.delete("/:id", questions.del.byId);
+
 module.exports = router;

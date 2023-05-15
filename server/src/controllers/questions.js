@@ -23,6 +23,11 @@ const post = {
         return;
       }
     } else {
+      if (!parseInt(id)) {
+        res.status(400).send({ message: "The id must be a number!" });
+        return;
+      }
+      
       const updatedResult = await questions.post.update(
         id,
         title,
@@ -33,7 +38,7 @@ const post = {
         const questionResult = await questions.get.byId(id);
         res.send({
           ...questionResult[0],
-          options: JSON.parse(questionResult[0])
+          options: JSON.parse(questionResult[0]),
         });
         return;
       }
@@ -50,6 +55,11 @@ const get = {
       return;
     }
 
+    if (!parseInt(id)) {
+      res.status(400).send({ message: "The id must be a number!" });
+      return;
+    }
+
     const questionResult = await questions.get.byId(id);
 
     if (questionResult.length === 0) {
@@ -59,12 +69,42 @@ const get = {
 
     res.send({
       ...questionResult[0],
-      options: JSON.parse(questionResult[0].options)
+      options: JSON.parse(questionResult[0].options),
     });
   }),
-}
+};
+
+const del = {
+  byId: asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).send({ message: "The id can not be null!" });
+      return;
+    }
+
+    if (!parseInt(id)) {
+      res.status(400).send({ message: "The id must be a number!" });
+      return;
+    }
+
+    const questionResult = await questions.get.byId(id);
+
+    if (questionResult.length === 0) {
+      res.status(400).send({ message: "Invalid id!" });
+      return;
+    }
+
+    const deletedQuestionResult = await questions.del.byId(id);
+
+    res.send({
+      affected_rows: deletedQuestionResult.affectedRows,
+    });
+  }),
+};
 
 module.exports = {
   post,
   get,
+  del,
 };

@@ -22,7 +22,16 @@ const get = {
   }
 }
 
+const del = {
+  byId(id) {
+    const sql = `DELETE FROM questions WHERE id = ${id};`;
+    const result = executeQuery(sql, connection);
+    return result;
+  }
+}
+
 module.exports = {
   post,
   get,
+  del,
 }
