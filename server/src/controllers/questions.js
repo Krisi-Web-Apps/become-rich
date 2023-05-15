@@ -27,7 +27,7 @@ const post = {
         res.status(400).send({ message: "The id must be a number!" });
         return;
       }
-      
+
       const updatedResult = await questions.post.update(
         id,
         title,
@@ -72,6 +72,22 @@ const get = {
       options: JSON.parse(questionResult[0].options),
     });
   }),
+  random: asyncHandler(async (req, res) => {
+    const { limit } = req.query;
+
+    if (limit && !parseInt(limit)) {
+      res.status(400).send({ message: "The limit must be a number!" });
+      return;
+    }
+
+    const randomQuestionsResult = await questions.get.random(limit);
+
+    randomQuestionsResult.forEach(questionItem => {
+      questionItem.options = JSON.parse(questionItem.options);
+    });
+
+    res.send(randomQuestionsResult);
+  })
 };
 
 const del = {

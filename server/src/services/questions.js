@@ -19,6 +19,11 @@ const get = {
     const sql = `SELECT * FROM questions WHERE id = ${id};`;
     const result = executeQuery(sql, connection);
     return result;
+  },
+  random(limit = 15) {
+    const sql = `SELECT * FROM questions ORDER BY RAND() LIMIT ${limit};`;
+    const result = executeQuery(sql, connection);
+    return result;
   }
 }
 
