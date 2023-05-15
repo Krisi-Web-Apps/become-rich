@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 
 const users = require("../services/users");
 const validations = require("../validations");
-const { passwordHash } = require("../utils");
+const { passwordHash, createToken, encryptToken } = require("../utils");
 
 const post = {
   register: asyncHandler(async (req, res) => {
@@ -45,7 +45,11 @@ const post = {
       JSON.stringify(options)
     );
 
-    res.send(insertedUserResult);
+    const token = createToken(insertedUserResult.insertId);
+
+    const encryptedToken = encryptToken(token);
+
+    res.send({ token: encryptedToken });
   }),
 };
 
