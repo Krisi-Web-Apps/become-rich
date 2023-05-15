@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 
 const users = require("../services/users");
 const validations = require("../validations");
-const { passwordHash, createToken, encryptToken } = require("../utils");
+const { passwordHash, createToken, encryptToken, verifyPassword } = require("../utils");
 
 const post = {
   register: asyncHandler(async (req, res) => {
@@ -51,6 +51,34 @@ const post = {
 
     res.send({ token: encryptedToken });
   }),
+  login: asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !validations.email(email)) {
+      res.status(400).send({ message: "Invalid email address." });
+      return;
+    }
+
+    const fetchedUserResult = await users.get.byEmail(email);
+
+    if (fetchedUserResult.length === 0) {
+      res.status(400).send({ message: "Invalid email address or password." });
+      return;
+    }
+
+    const isValidPassword = verifyPassword(password, fetchedUserResult[0].password);
+
+    if (!isValidPassword) {
+      res.status(400).send({ message: "Invalid email address or password." });
+      return;
+    }
+
+    const token = createToken(fetchedUserResult[0].id);
+
+    const encryptedToken = encryptToken(token);
+
+    res.send({ token: encryptedToken });
+  })
 };
 
 module.exports = {

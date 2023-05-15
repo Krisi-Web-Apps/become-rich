@@ -24,6 +24,11 @@ const passwordHash = (password) => {
     return hash;
 }
 
+const verifyPassword = (password, hash) => {
+    const isValidPassword = bcrypt.compareSync(password, hash);
+    return isValidPassword;
+}
+
 const encryptToken = (token) => {
     const encryptedToken = CryptoJS.AES.encrypt(JSON.stringify(token), process.env.CRYPTO_JS_SECRET).toString();
     return encryptedToken;
@@ -49,6 +54,7 @@ module.exports = {
     readSQLFileAsString,
     executeQuery,
     passwordHash,
+    verifyPassword,
     encryptToken,
     decryptToken,
     createToken,
