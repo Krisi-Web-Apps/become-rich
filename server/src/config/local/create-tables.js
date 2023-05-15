@@ -11,6 +11,10 @@ const SQL_TABLES = [
     name: "questions",
     filePath: "sql/questions",
   },
+  {
+    name: "users",
+    filePath: "sql/users",
+  },
 ];
 
 const createTables = () => {

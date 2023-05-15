@@ -1,4 +1,5 @@
 const fs = require("fs");
+const bcrypt = require("bcrypt");
 
 const readSQLFileAsString = (filePath) => {
     return fs.readFileSync(`${filePath}.sql`).toString();
@@ -15,7 +16,14 @@ const executeQuery = (sql, connection) => {
     return promise;
 }
 
+const passwordHash = (password) => {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    return hash;
+}
+
 module.exports = {
     readSQLFileAsString,
     executeQuery,
+    passwordHash,
 };

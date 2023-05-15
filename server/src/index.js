@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", require("./routers/common"));
+app.use("/users", require("./routers/users"));
 app.use("/questions", require("./routers/questions"));
 
 const { errorHandler } = require("./config/middlewares");
