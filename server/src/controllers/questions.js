@@ -41,6 +41,30 @@ const post = {
   }),
 };
 
+const get = {
+  byId: asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).send({ message: "The id can not be null!" });
+      return;
+    }
+
+    const questionResult = await questions.get.byId(id);
+
+    if (questionResult.length === 0) {
+      res.status(400).send({ message: "Invalid id!" });
+      return;
+    }
+
+    res.send({
+      ...questionResult[0],
+      options: JSON.parse(questionResult[0].options)
+    });
+  }),
+}
+
 module.exports = {
   post,
+  get,
 };
