@@ -13,6 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", require("./routers/common"));
 app.use("/questions", require("./routers/questions"));
 
+const { errorHandler } = require("./config/middlewares");
+app.use(errorHandler);
+
 app.listen(process.env.PORT, () => {
   if (process.env.NODE_ENV === "development") {
     console.log(
