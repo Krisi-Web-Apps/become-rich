@@ -40,8 +40,8 @@ const decryptToken = (encryptedToken) => {
     return decryptedToken;
 }
 
-const createToken = (id) => {
-    const token = jwt.sign({ id }, process.env.JWT_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRES_IN });
+const createToken = (data) => {
+    const token = jwt.sign({ data }, process.env.JWT_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRES_IN });
     return token;
 }
 

@@ -14,6 +14,16 @@ const get = {
     const sql = `SELECT * FROM users WHERE email = '${email}';`;
     const result = executeQuery(sql, connection);
     return result;
+  },
+  passwordById(id) {
+    const sql = `SELECT password FROM users WHERE id = ${id};`;
+    const result = executeQuery(sql, connection);
+    return result;
+  },
+  roleAsById(id) {
+    const sql = `SELECT role_as FROM users WHERE id = ${id};`;
+    const result = executeQuery(sql, connection);
+    return result;
   }
 }
 

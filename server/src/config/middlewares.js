@@ -1,4 +1,6 @@
 const { verifyToken, decryptToken } = require("../utils");
+const users = require("../services/users");
+const asyncHandler = require("express-async-handler");
 
 const errorHandler = (err, req, res, next) => {
   if (err) {
@@ -10,7 +12,7 @@ const errorHandler = (err, req, res, next) => {
   next();
 };
 
-const isAuth = (req, res, next) => {
+const isAuth = asyncHandler(async (req, res, next) => {
   const unsplittedToken = req.headers.authorization;
 
   if (!unsplittedToken) {
@@ -29,12 +31,33 @@ const isAuth = (req, res, next) => {
     return;
   }
 
-  req.user = decoded;
+  const fetchedUserPasswordResult = await users.get.passwordById(decoded.data.id);
+
+  if (fetchedUserPasswordResult[0].password !== decoded.data.password) {
+    res.status(403).send({ message: "The password is wrong." });
+    return;
+  }
+
+  req.user = decoded.data;
 
   next();
-}
+});
+
+const isAdmin = asyncHandler(async (req, res, next) => {
+    const { id } = req.user;
+
+    const fetchedUserRoleAsResult = await users.get.roleAsById(id);
+
+    if (fetchedUserRoleAsResult[0].role_as !== "admin") {
+      res.status(400).send({ message: "You are not authorized." });
+      return;
+    }
+
+    next();
+});
 
 module.exports = {
   errorHandler,
   isAuth,
+  isAdmin,
 };

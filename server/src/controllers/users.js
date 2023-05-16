@@ -45,7 +45,10 @@ const post = {
       JSON.stringify(options)
     );
 
-    const token = createToken(insertedUserResult.insertId);
+    const token = createToken({
+      id: fetchedUserResult[0].id,
+      password: fetchedUserResult[0].password,
+    });
 
     const encryptedToken = encryptToken(token);
 
@@ -73,7 +76,10 @@ const post = {
       return;
     }
 
-    const token = createToken(fetchedUserResult[0].id);
+    const token = createToken({
+      id: fetchedUserResult[0].id,
+      password: fetchedUserResult[0].password,
+    });
 
     const encryptedToken = encryptToken(token);
 
