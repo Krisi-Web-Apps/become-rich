@@ -39,7 +39,12 @@ const get = {
     const sql = `SELECT * FROM users ORDER BY id;`;
     const result = executeQuery(sql, connection);
     return result;
-  }
+  },
+  search(by, term) {
+    const sql = `SELECT * FROM users WHERE ${by} LIKE '${term}%';`;
+    const result = executeQuery(sql, connection);
+    return result;
+  },
 }
 
 module.exports = {
