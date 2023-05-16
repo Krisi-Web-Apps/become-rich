@@ -46,8 +46,8 @@ const post = {
     );
 
     const token = createToken({
-      id: fetchedUserResult[0].id,
-      password: fetchedUserResult[0].password,
+      id: insertedUserResult.insertId,
+      password: hashedPassword,
     });
 
     const encryptedToken = encryptToken(token);
@@ -87,6 +87,20 @@ const post = {
   })
 };
 
+const get = {
+  loggedInUser: asyncHandler(async (req, res) => {
+    const { id } = req.user;
+
+    const fetchedUserResult = await users.get.byId(id);
+
+    delete fetchedUserResult[0].password;
+    fetchedUserResult[0].options = JSON.parse(fetchedUserResult[0].options);
+
+    res.send(fetchedUserResult[0]);
+  }),
+}
+
 module.exports = {
   post,
+  get,
 };

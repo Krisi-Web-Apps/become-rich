@@ -38,7 +38,7 @@ const post = {
         const questionResult = await questions.get.byId(id);
         res.send({
           ...questionResult[0],
-          options: JSON.parse(questionResult[0]),
+          options: JSON.parse(questionResult[0].options),
         });
         return;
       }

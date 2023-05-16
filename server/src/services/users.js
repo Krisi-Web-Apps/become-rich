@@ -24,6 +24,11 @@ const get = {
     const sql = `SELECT role_as FROM users WHERE id = ${id};`;
     const result = executeQuery(sql, connection);
     return result;
+  },
+  byId(id) {
+    const sql = `SELECT * FROM users WHERE id = ${id};`;
+    const result = executeQuery(sql, connection);
+    return result;
   }
 }
 
