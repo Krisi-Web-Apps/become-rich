@@ -87,7 +87,21 @@ const get = {
     });
 
     res.send(randomQuestionsResult);
-  })
+  }),
+  all: asyncHandler(async (req, res) => {
+    const { limit, offset } = req.query;
+
+    let fetchedQuestionsResult;
+
+    if (limit && offset) fetchedQuestionsResult = await questions.get.allByLimit(limit, offset);
+    else fetchedQuestionsResult = await questions.get.all();
+
+    fetchedQuestionsResult.forEach(question => {
+      question.options = JSON.parse(question.options);
+    });
+
+    res.send(fetchedQuestionsResult);
+  }),
 };
 
 const del = {

@@ -4,6 +4,7 @@ const { isAuth, isAdmin } = require("../config/middlewares");
 
 router.get("/random", questions.get.random);
 router.get("/:id", questions.get.byId);
+router.get("/admin/all", questions.get.all);
 
 router.post("/", isAuth, isAdmin, questions.post.save);
 
