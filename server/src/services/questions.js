@@ -7,8 +7,8 @@ const post = {
     const result = executeQuery(sql, connection);
     return result;
   },
-  update(id, title, options) {
-    const sql = `UPDATE questions SET title='${title}', options='${options}' WHERE id = ${id};`;
+  update(id, title, options, category) {
+    const sql = `UPDATE questions SET title='${title}', options='${options}', category='${category}' WHERE id = ${id};`;
     const result = executeQuery(sql, connection);
     return result;
   }
