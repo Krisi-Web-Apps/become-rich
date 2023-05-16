@@ -98,6 +98,21 @@ const get = {
 
     res.send(fetchedUserResult[0]);
   }),
+  all: asyncHandler(async (req, res) => {
+    const { limit, offset } = req.query;
+
+    let fetchedUsersResult;
+
+    if (limit && offset) fetchedUsersResult = await users.get.allByLimit(limit, offset);
+    else fetchedUsersResult = await users.get.all();
+
+    fetchedUsersResult.forEach(user => {
+      user.options = JSON.parse(user.options);
+      delete user.password;
+    });
+
+    res.send(fetchedUsersResult);
+  }),
 }
 
 module.exports = {

@@ -29,6 +29,16 @@ const get = {
     const sql = `SELECT * FROM users WHERE id = ${id};`;
     const result = executeQuery(sql, connection);
     return result;
+  },
+  allByLimit(limit = 20, offset = 0) {
+    const sql = `SELECT * FROM users ORDER BY id LIMIT ${limit} OFFSET ${offset};`;
+    const result = executeQuery(sql, connection);
+    return result;
+  },
+  all() {
+    const sql = `SELECT * FROM users ORDER BY id;`;
+    const result = executeQuery(sql, connection);
+    return result;
   }
 }
 
