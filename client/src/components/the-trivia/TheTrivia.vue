@@ -95,7 +95,7 @@ export default {
     const moneyBar = useMoneyBarStore();
 
     const functions = {
-      start(ms) {
+      start(ms = 1000) {
         setTimeout(() => {
           question.start();
         }, ms);
@@ -107,7 +107,7 @@ export default {
     };
 
     functions.getRandomImageUrl();
-
+    
     functions.start(1000);
 
     return { env, question, moneyBar, backgroundUrl };

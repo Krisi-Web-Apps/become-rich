@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useEnvStore } from "./env";
+import api from "../boot/axios";
 
 export const useQuestionTimerStore = defineStore("questionTimer", {
   state: () => ({
@@ -75,97 +76,25 @@ export const useQuestionStore = defineStore("question", {
     isEnd: false,
     additionalClass: "",
     selectedAnswerIndex: -1,
-    items: [
-      {
-        title: "Кой е най-големият орган в човешкото тяло?",
-        answers: [
-          {
-            text: "Сърце",
-            is_correct: false,
-          },
-          {
-            text: "Мозък",
-            is_correct: false,
-          },
-          {
-            text: "Кожа",
-            is_correct: true,
-          },
-          {
-            text: "Черен дроб",
-            is_correct: false,
-          },
-        ],
-      },
-      {
-        title: "Коя е най-малката планета в нашата слънчева система?",
-        answers: [
-          {
-            text: "Венера",
-            is_correct: false,
-          },
-          {
-            text: "Земя",
-            is_correct: false,
-          },
-          {
-            text: "Меркурий",
-            is_correct: true,
-          },
-          {
-            text: "Марс",
-            is_correct: false,
-          },
-        ],
-      },
-      {
-        title:
-          "Как се нарича процесът, при който растенията превръщат слънчевата светлина, водата и въглеродния диоксид в енергия?",
-        answers: [
-          {
-            text: "Фотосинтеза",
-            is_correct: true,
-          },
-          {
-            text: "Дишане",
-            is_correct: false,
-          },
-          {
-            text: "Храносмилане",
-            is_correct: false,
-          },
-          {
-            text: "Ферментация",
-            is_correct: false,
-          },
-        ],
-      },
-      {
-        title:
-          "Кое от следните е вид възобновяема енергия?",
-        answers: [
-          {
-            text: "Въглища",
-            is_correct: false,
-          },
-          {
-            text: "Природен газ",
-            is_correct: false,
-          },
-          {
-            text: "Слънчева",
-            is_correct: true,
-          },
-          {
-            text: "Петрол",
-            is_correct: false,
-          },
-        ],
-      },
-    ],
+    url: "/questions",
+    items: [],
     item: {},
   }),
   actions: {
+    getItems(cb) {
+      this.loading = true;
+      api.get(`${this.url}/random`)
+        .then(res => {
+          this.items = res.data;
+          cb();
+        })
+        .catch(err => {
+          if (err.response.data.message === "The limit must be a number!") {
+            console.log("Невалидно подадени данни.");
+          }
+        })
+        .finally(() => this.loading = false);
+    },
     getNextItem() {
       this.correctAnimation = -1;
 
@@ -180,7 +109,7 @@ export const useQuestionStore = defineStore("question", {
       // get next question
       let nextItem = this.items[this.currentQuestionIndex];
       const env = useEnvStore();
-      nextItem.answers = env.shuffle(nextItem.answers);
+      nextItem.answers = env.shuffle(nextItem.options.answers);
       this.item = nextItem;
 
       // reset timer
@@ -188,8 +117,10 @@ export const useQuestionStore = defineStore("question", {
       timer.reset();
     },
     start() {
-      this.getNextItem();
-      this.isStart = true;
+      this.getItems(() => {
+        this.getNextItem();
+        this.isStart = true;
+      });
     },
     end() {
       this.isEnd = true;
