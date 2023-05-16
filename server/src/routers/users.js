@@ -9,5 +9,6 @@ router.get("/admin/search", isAuth, isAdmin, users.get.search);
 router.post("/register", users.post.register);
 router.post("/login", users.post.login);
 router.post("/", isAuth, users.post.update);
+router.post("/change-password", isAuth, users.post.changePassword);
 
 module.exports = router;

@@ -11,6 +11,11 @@ const post = {
     const sql = `UPDATE users SET gender='${gender}', options='${options}' WHERE id = ${id};`;
     const result = executeQuery(sql, connection);
     return result;
+  },
+  changePassword(id, password) {
+    const sql = `UPDATE users SET password='${password}' WHERE id = ${id};`;
+    const result = executeQuery(sql, connection);
+    return result;
   }
 }
 

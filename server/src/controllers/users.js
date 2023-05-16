@@ -97,7 +97,34 @@ const post = {
     delete fetchedUserResult[0].password;
 
     res.send(fetchedUserResult[0]);
-  })
+  }),
+  changePassword: asyncHandler(async (req, res) => {
+    const { id } = req.user;
+    const { old_password, new_password, cnew_password } = req.body;
+
+    if (!validations.password(new_password)) {
+      res.status(400).send({ message: "The password is to leak." });
+      return;
+    }
+
+    if (new_password !== cnew_password) {
+      res.status(400).send({ message: "The password's don't match." });
+      return;
+    }
+
+    const fetchedUserResult = await users.get.byId(id);
+
+    if (!verifyPassword(old_password, fetchedUserResult[0].password)) {
+      res.status(400).send({ message: "Invalid old password." });
+      return;
+    }
+
+    const hashedPassword = passwordHash(new_password);
+
+    await users.post.changePassword(id, hashedPassword);
+
+    res.send({ message: "The password is changed." });
+  }),
 };
 
 const get = {
