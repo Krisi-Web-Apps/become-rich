@@ -4,13 +4,14 @@ const questions = require("../services/questions");
 
 const post = {
   save: asyncHandler(async (req, res) => {
-    const { id, title, options, category } = req.body;
+    const { id, title, options, category, difficulty } = req.body;
 
     if (!id) {
       const insertedResult = await questions.post.insert(
         title,
         JSON.stringify(options),
-        category
+        category,
+        difficulty
       );
 
       if (insertedResult.affectedRows > 0) {
@@ -33,7 +34,8 @@ const post = {
         id,
         title,
         JSON.stringify(options),
-        category
+        category,
+        difficulty
       );
 
       if (updatedResult.affectedRows === 0) {

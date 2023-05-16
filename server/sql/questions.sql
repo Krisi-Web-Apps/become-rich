@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
     `title` VARCHAR(255) NOT NULL,
     `options` TEXT NOT NULL,
     `category` VARCHAR (75) NOT NULL,
+    `difficulty` TINYINT (2) NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `opdated_at` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),

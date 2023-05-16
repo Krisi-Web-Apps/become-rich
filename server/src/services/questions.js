@@ -2,13 +2,13 @@ const connection = require("../config/database");
 const { executeQuery } = require("../utils");
 
 const post = {
-  insert(title, options) {
-    const sql = `INSERT INTO questions (title, options) VALUES ('${title}', '${options}');`;
+  insert(title, options, category, difficulty) {
+    const sql = `INSERT INTO questions (title, options, category, difficulty) VALUES ('${title}', '${options}', '${category}', '${difficulty}');`;
     const result = executeQuery(sql, connection);
     return result;
   },
-  update(id, title, options, category) {
-    const sql = `UPDATE questions SET title='${title}', options='${options}', category='${category}' WHERE id = ${id};`;
+  update(id, title, options, category, difficulty) {
+    const sql = `UPDATE questions SET title='${title}', options='${options}', category='${category}', difficulty='${difficulty}' WHERE id = ${id};`;
     const result = executeQuery(sql, connection);
     return result;
   }
