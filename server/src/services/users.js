@@ -6,6 +6,11 @@ const post = {
     const sql = `INSERT INTO users (email, password, username, gender, options) VALUES ('${email}', '${password}', '${username}', '${gender}', '${options}');`;
     const result = executeQuery(sql, connection);
     return result;
+  },
+  update(id, gender, options) {
+    const sql = `UPDATE users SET gender='${gender}', options='${options}' WHERE id = ${id};`;
+    const result = executeQuery(sql, connection);
+    return result;
   }
 }
 

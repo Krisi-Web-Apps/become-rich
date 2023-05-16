@@ -84,6 +84,19 @@ const post = {
     const encryptedToken = encryptToken(token);
 
     res.send({ token: encryptedToken });
+  }),
+  update: asyncHandler(async (req, res) => {
+    const { id } = req.user;
+    const { gender, options } = req.body;
+
+    await users.post.update(id, gender, JSON.stringify(options));
+
+    const fetchedUserResult = await users.get.byId(id);
+    
+    fetchedUserResult[0].options = JSON.parse(fetchedUserResult[0].options);
+    delete fetchedUserResult[0].password;
+
+    res.send(fetchedUserResult[0]);
   })
 };
 
