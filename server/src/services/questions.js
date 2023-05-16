@@ -42,6 +42,11 @@ const del = {
     const sql = `DELETE FROM questions WHERE id = ${id};`;
     const result = executeQuery(sql, connection);
     return result;
+  },
+  all() {
+    const sql = `DELETE FROM questions;`;
+    const result = executeQuery(sql, connection);
+    return result;
   }
 }
 

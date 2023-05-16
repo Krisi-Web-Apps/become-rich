@@ -34,14 +34,17 @@ const post = {
         JSON.stringify(options)
       );
 
-      if (updatedResult.affectedRows > 0) {
-        const questionResult = await questions.get.byId(id);
-        res.send({
-          ...questionResult[0],
-          options: JSON.parse(questionResult[0].options),
-        });
+      if (updatedResult.affectedRows === 0) {
+        res.status(400).send({ message: "Invalid id." });
         return;
       }
+
+      const questionResult = await questions.get.byId(id);
+      
+      res.send({
+        ...questionResult[0],
+        options: JSON.parse(questionResult[0].options),
+      });
     }
   }),
 };
@@ -129,6 +132,12 @@ const del = {
 
     res.send({
       affected_rows: deletedQuestionResult.affectedRows,
+    });
+  }),
+  all: asyncHandler(async (req, res) => {
+    const deletedQuestionsResult = await questions.del.all();
+    res.send({
+      affected_rows: deletedQuestionsResult.affectedRows,
     });
   }),
 };

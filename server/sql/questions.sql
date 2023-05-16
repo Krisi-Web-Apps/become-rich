@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `become_rich`.`questions` (
+CREATE TABLE IF NOT EXISTS `questions` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
     `options` TEXT NOT NULL,

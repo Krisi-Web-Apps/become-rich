@@ -6,8 +6,9 @@ router.get("/random", questions.get.random);
 router.get("/:id", questions.get.byId);
 router.get("/admin/all", questions.get.all);
 
-router.post("/", isAuth, isAdmin, questions.post.save);
+router.post("/admin", isAuth, isAdmin, questions.post.save);
 
-router.delete("/:id", isAuth, isAdmin, questions.del.byId);
+router.delete("/admin/all", isAuth, isAdmin, questions.del.all);
+router.delete("/admin/:id", isAuth, isAdmin, questions.del.byId);
 
 module.exports = router;
