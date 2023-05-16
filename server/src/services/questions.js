@@ -34,7 +34,12 @@ const get = {
     const sql = `SELECT * FROM questions ORDER BY id;`;
     const result = executeQuery(sql, connection);
     return result;
-  }
+  },
+  search(by, term) {
+    const sql = `SELECT * FROM questions WHERE ${by} LIKE '${term}%';`;
+    const result = executeQuery(sql, connection);
+    return result;
+  },
 }
 
 const del = {
@@ -47,7 +52,7 @@ const del = {
     const sql = `DELETE FROM questions;`;
     const result = executeQuery(sql, connection);
     return result;
-  }
+  },
 }
 
 module.exports = {
