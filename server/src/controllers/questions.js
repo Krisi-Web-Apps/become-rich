@@ -106,14 +106,17 @@ const get = {
     res.send(fetchedQuestionsResult);
   }),
   search: asyncHandler(async (req, res) => {
-    const { by, term } = req.query;
+    const { by, term, limit, offset } = req.query;
 
     if (!(by && term)) {
       res.status(400).send({ message: "Invalid query parameters 'by' or 'term'." });
       return;
     }
 
-    const findedQuestionsResult = await questions.get.search(by, term);
+    let findedQuestionsResult;
+
+    if (limit && offset) findedQuestionsResult = await questions.get.search(by, term, limit, offset);
+    else findedQuestionsResult = await questions.get.search(by, term);
 
     findedQuestionsResult.forEach(question => {
       question.options = JSON.parse(question.options);

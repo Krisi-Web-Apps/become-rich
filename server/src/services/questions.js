@@ -35,8 +35,8 @@ const get = {
     const result = executeQuery(sql, connection);
     return result;
   },
-  search(by, term) {
-    const sql = `SELECT * FROM questions WHERE ${by} LIKE '${term}%';`;
+  search(by, term, limit = 10, offset = 0) {
+    const sql = `SELECT * FROM questions WHERE ${by} LIKE '${term}%' LIMIT ${limit} OFFSET ${offset};`;
     const result = executeQuery(sql, connection);
     return result;
   },
