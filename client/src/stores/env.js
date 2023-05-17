@@ -7,6 +7,12 @@ export const useEnvStore = defineStore("env", {
       theTrivia: false,
       theEndTrivia: false,
     },
+    dialogs: {
+      auth: {
+        register: false,
+        login: false,
+      }
+    },
     responsiveViews: {
       moneyBar: false,
     },

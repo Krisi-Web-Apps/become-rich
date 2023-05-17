@@ -2,6 +2,7 @@
   <div>
     <div
       class="timer-class"
+      :class="outOfTimeClass"
     >
       {{ questionTimer.seconds }}
     </div>
@@ -13,6 +14,11 @@ import { useQuestionTimerStore } from "../../stores/question";
 
 export default {
   name: "QuestionTimer",
+  computed: {
+    outOfTimeClass() {
+      return `${this.questionTimer.seconds < 10 ? 'out-of-time-class' : ''}`;
+    }
+  },
   setup() {
     const questionTimer = useQuestionTimerStore();
     return { questionTimer };
@@ -22,6 +28,20 @@ export default {
 
 <style>
 .timer-class {
-    @apply text-2xl font-bold text-white py-5 px-5 border-4 border-white bg-primary/60;
+    @apply text-2xl font-bold text-white w-20 h-20 flex justify-center items-center border-4 bg-primary/60;
+}
+.out-of-time-class {
+  animation: outOfTimeAnim 1000ms ease infinite;
+}
+@keyframes outOfTimeAnim {
+  0% {
+    border-color: white;
+  }
+  50% {
+    border-color: red;
+  }
+  100% {
+    border-color: white;
+  }
 }
 </style>

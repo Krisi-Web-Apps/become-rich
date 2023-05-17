@@ -7,7 +7,7 @@
       <transition-group name="fade">
         <div
           v-if="question.item && question.isStart && question.isEnd === false"
-          class="w-full h-full flex flex-col justify-end pb-20"
+          class="relative w-full h-full flex flex-col justify-end pb-20"
         >
           <button
             class="fixed top-10 right-10 bg-primary text-white border-2 px-5 py-2 block md:hidden focus:bg-white focus:text-primary transition-all"

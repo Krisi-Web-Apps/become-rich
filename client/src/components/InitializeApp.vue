@@ -1,23 +1,27 @@
 <template>
+  <top-navbar-menu />
+  <auth-wrapper />
   <div class="w-full h-screen">
-    <transition name="fade">
-      <div
-        v-if="env.screens.start"
-        class="bg-gradient w-full h-full flex justify-center items-center"
-      >
-        <h1 class="text-white text-center text-6xl font-bold text-animation">
-          Стани Богат
-        </h1>
-      </div>
-    </transition>
-    <transition name="fade">
-      <div
-        v-if="env.screens.start === false && env.screens.theTrivia"
-        class="w-full h-full"
-      >
-        <the-trivia />
-      </div>
-    </transition>
+    <div class="w-full h-5/6 container">
+      <transition name="fade">
+        <div
+          v-if="env.screens.start"
+          class="bg-gradient w-full h-full flex justify-center items-center"
+        >
+          <h1 class="text-white text-center text-6xl font-bold text-animation">
+            Стани Богат
+          </h1>
+        </div>
+      </transition>
+      <transition name="fade">
+        <div
+          v-if="env.screens.start === false && env.screens.theTrivia"
+          class="w-full h-full"
+        >
+          <the-trivia />
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -27,11 +31,15 @@ import { useEnvStore } from "../stores/env";
 
 // components
 import TheTrivia from "../components/the-trivia/TheTrivia.vue";
+import TopNavbarMenu from "../components/navbars/TopNavbarMenu/TopNavbarMenu.vue";
+import AuthWrapper from "../components/auth/AuthWrapper.vue";
 
 export default {
   name: "InitializeApp",
   components: {
     TheTrivia,
+    TopNavbarMenu,
+    AuthWrapper,
   },
   setup() {
     const env = useEnvStore();
