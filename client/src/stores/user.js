@@ -37,6 +37,22 @@ export const useUserStore = defineStore("user", {
         })
         .finally(() => this.loading = false);
     },
+    login() {
+      this.loading = true;
+      api.post(`${this.url}/login`, this.item)
+        .then(res => {
+          this.afterLogin(res.data.token);
+          const env = useEnvStore();
+          env.dialogs.auth.login = false;
+        })
+        .catch(err => {
+          if (err.response.data.message === "Invalid email address.")
+            app.$toast.error("Невалиден имейл адрес.");
+          if (err.response.data.message === "Invalid email address or password.")
+            app.$toast.error("Невалиден имейл или парола.");
+        })
+        .finally(() => this.loading = false);
+    },
     afterLogin(token) {
       api.defaults.headers.authorization = `Bearer ${token}`;
       localStorage.setItem("token", token);

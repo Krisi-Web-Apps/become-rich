@@ -1,6 +1,6 @@
 <template>
   <base-dialog>
-    <template v-slot:header>Вхов</template>
+    <template v-slot:header>Регистрация</template>
     <template v-slot:body>
       <form class="h-[400px] overflow-y-scroll pr-5" ref="form">
         <div class="mb-5">
