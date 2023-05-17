@@ -14,18 +14,22 @@
 <script>
 // stores
 import { useEnvStore } from '../../../stores/env';
+import { useUserStore } from '../../../stores/user';
 
 export default {
   name: "TopNavbarMenu",
   setup() {
     const env = useEnvStore();
+    const user = useUserStore();
 
     const functions = {
       open: {
         login() {
+          user.item = { options: { } }
           env.dialogs.auth.login = true;
         },
         register() {
+          user.item = { options: { } }
           env.dialogs.auth.register = true;
         }
       },

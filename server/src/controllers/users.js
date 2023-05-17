@@ -28,6 +28,11 @@ const post = {
       return;
     }
 
+    if (!gender) {
+      res.status(400).send({ message: "Please select gender." });
+      return;
+    }
+
     const userResult = await users.get.byEmail(email);
 
     if (userResult.length > 0) {

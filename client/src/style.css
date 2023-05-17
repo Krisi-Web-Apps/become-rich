@@ -35,3 +35,6 @@
 button {
   @apply py-2 px-5 border rounded hover:bg-gray-100 active:bg-gray-200;
 }
+.base-input {
+  @apply outline-none w-full border py-2 px-4 hover:border-gray-300 active:border-gray-400 focus:border-gray-400;
+}
