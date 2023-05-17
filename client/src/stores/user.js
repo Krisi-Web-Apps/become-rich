@@ -7,6 +7,7 @@ import { app } from "./../main";
 export const useUserStore = defineStore("user", {
   state: () => ({
     loading: false,
+    isLoggedIn: false,
     url: "/users",
     me: {},
     item: {},
@@ -17,9 +18,11 @@ export const useUserStore = defineStore("user", {
       this.loading = true;
       api.post(`${this.url}/register`, this.item)
         .then(res => {
-          this.afterLogin(res.data.token);
+          this.setToken(res.data.token);
+          this.afterLogin();
           const env = useEnvStore();
           env.dialogs.auth.register = false;
+          this.getUser();
         })
         .catch(err => {
           if (err.response.data.message === "Invalid email address.")
@@ -41,9 +44,11 @@ export const useUserStore = defineStore("user", {
       this.loading = true;
       api.post(`${this.url}/login`, this.item)
         .then(res => {
-          this.afterLogin(res.data.token);
+          this.setToken(res.data.token);
+          this.afterLogin();
           const env = useEnvStore();
           env.dialogs.auth.login = false;
+          this.getUser();
         })
         .catch(err => {
           if (err.response.data.message === "Invalid email address.")
@@ -53,9 +58,28 @@ export const useUserStore = defineStore("user", {
         })
         .finally(() => this.loading = false);
     },
-    afterLogin(token) {
+    logout() {
+      api.defaults.headers.authorization = null;
+      localStorage.removeItem("token");
+      this.isLoggedIn = false;
+    },
+    afterLogin() {
+      this.isLoggedIn = true;
+    },
+    setToken(token) {
       api.defaults.headers.authorization = `Bearer ${token}`;
       localStorage.setItem("token", token);
+    },
+    getUser() {
+      this.loading = true;
+      api.get(this.url)
+        .then(res => {
+          this.item = res.data;
+        })
+        .catch(err => {
+          this.logout();
+        })
+        .finally(() => this.loading = false);
     }
   }
 });

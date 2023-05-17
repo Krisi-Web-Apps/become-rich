@@ -1,20 +1,24 @@
 <template>
-  <div class="grid md:grid-cols-2 gap-5 mt-5 md:mt-20 px-5 md:px-20">
-    <button
-      v-for="(item, index) in props.answers"
-      :key="index"
-      class="py-2.5 px-5 border-2 text-left border-white text-white bg-primary/90 transition-colors"
-      :class="
-        question.selectedAnswerIndex === index ? question.additionalClass : null
-      "
-      :disabled="question.selectedAnswerIndex !== -1"
-      @click="() => selectAnswer(index)"
-    >
-      <div>
-        <span>{{ letters[index] }}. </span>
-        {{ item.text }}
-      </div>
-    </button>
+  <div class="mt-5 lg:mt-20 px-5 lg:px-20">
+    <ul class="grid lg:grid-cols-2 gap-5">
+      <li
+        v-for="(item, index) in props.answers"
+        :key="index"
+        class="answer-item"
+        :class="
+          question.selectedAnswerIndex === index
+            ? question.additionalClass
+            : 'bg-primary/90'
+        "
+        :disabled="question.selectedAnswerIndex !== -1"
+        @click="() => selectAnswer(index)"
+      >
+        <div>
+          <span>{{ letters[index] }}. </span>
+          {{ item.text }}
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -55,30 +59,13 @@ export default {
 </script>
 
 <style>
-@keyframes correctAnimation {
-  0% {
-    background-color: #00ff4c;
-  }
-  20% {
-    background-color: #0f0ff0;
-  }
-  40% {
-    background-color: #00ff4c;
-  }
-  60% {
-    background-color: #0f0ff0;
-  }
-  80% {
-    background-color: #00ff4c;
-  }
-  100% {
-    background-color: #0f0ff0;
-  }
+.answer-item {
+  @apply py-2.5 px-5 border-2 text-left border-white text-white hover:bg-blue-600 active:bg-blue-800 cursor-pointer;
 }
 .correct-answer {
-  animation: correctAnimation 1000ms ease;
+  @apply bg-green-500;
 }
 .wrong-answer {
-  background-color: #ff0000;
+  @apply bg-red-500;
 }
 </style>

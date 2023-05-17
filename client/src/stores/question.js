@@ -159,7 +159,7 @@ export const useQuestionStore = defineStore("question", {
         this.getNextItem();
         this.additionalClass = "";
         this.selectedAnswerIndex = -1;
-      }, 3000);
+      }, 1000);
     },
     wrongAnswer() {
       this.additionalClass = "wrong-answer";
