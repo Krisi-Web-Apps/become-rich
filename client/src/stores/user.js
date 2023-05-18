@@ -9,6 +9,8 @@ export const useUserStore = defineStore("user", {
     loading: false,
     isLoggedIn: false,
     url: "/users",
+    offset: 0,
+    limit: 10,
     me: {},
     item: {},
     items: [],
@@ -116,6 +118,19 @@ export const useUserStore = defineStore("user", {
             app.$toast.error("Невалидна парола.");
             this.logout();
           }
+        })
+        .finally(() => (this.loading = false));
+    },
+    getItems() {
+      this.loading = true;
+      api
+        .get(`${this.url}/admin/all?limit=${this.limit}&offset=${this.offset}`)
+        .then((res) => {
+          this.items = res.data;
+        })
+        .catch((err) => {
+          app.$toast.error("Изтекла сесия.");
+          this.logout();
         })
         .finally(() => (this.loading = false));
     },

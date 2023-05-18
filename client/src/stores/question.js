@@ -75,16 +75,31 @@ export const useQuestionStore = defineStore("question", {
     additionalClass: "",
     selectedAnswerIndex: -1,
     url: "/questions",
+    offset: 0,
+    limit: 10,
     items: [],
     item: {},
   }),
   actions: {
-    getItems(cb) {
+    getRandomItems(cb) {
       this.loading = true;
       api.get(`${this.url}/random`)
         .then(res => {
           this.items = res.data;
           cb();
+        })
+        .catch(err => {
+          if (err.response.data.message === "The limit must be a number!") {
+            console.log("Невалидно подадени данни.");
+          }
+        })
+        .finally(() => this.loading = false);
+    },
+    getItems() {
+      this.loading = true;
+      api.get(`${this.url}/all?limit=${this.limit}&offset=${this.offset}`)
+        .then(res => {
+          this.items = res.data;
         })
         .catch(err => {
           if (err.response.data.message === "The limit must be a number!") {
@@ -115,7 +130,7 @@ export const useQuestionStore = defineStore("question", {
       timer.reset();
     },
     start() {
-      this.getItems(() => {
+      this.getRandomItems(() => {
         this.getNextItem();
         this.isStart = true;
       });
