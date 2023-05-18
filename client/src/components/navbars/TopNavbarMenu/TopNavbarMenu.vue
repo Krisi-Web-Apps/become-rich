@@ -2,15 +2,18 @@
   <div class="container h-14 flex items-center">
     <ul v-if="!user.isLoggedIn" class="flex gap-2 px-2">
       <li>
-        <button @click="() => handleOpen('login')">Вход</button>
+        <button class="base-button" @click="() => handleOpen('login')">Вход</button>
       </li>
       <li>
-        <button @click="() => handleOpen('register')">Регистрация</button>
+        <button class="base-button" @click="() => handleOpen('register')">Регистрация</button>
       </li>
     </ul>
     <ul v-if="user.isLoggedIn" class="flex gap-2 px-2">
       <li>
-        <button @click="() => handleOpen('profile')">Профил</button>
+        <button class="base-button" @click="() => handleOpen('logout')">Изход</button>
+      </li>
+      <li>
+        <button class="base-button" @click="() => handleOpen('profile')">Профил</button>
       </li>
     </ul>
   </div>
@@ -37,6 +40,9 @@ export default {
           user.item = { options: {} };
           env.dialogs.auth.register = true;
         },
+        logout() {
+          user.logout();
+        }
       },
       handleOpen(func) {
         this.open[func]();

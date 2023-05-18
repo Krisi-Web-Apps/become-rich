@@ -11,7 +11,7 @@
             `${question.selectedAnswerIndex === index && `${question.additionalClass}`}
             ${question.selectedAnswerIndex !== index && 'bg-primary/90 hover:bg-blue-600 active:bg-blue-800'}`
           "
-          :disabled="question.selectedAnswerIndex !== -1"
+          :disabled="question.selectedAnswerIndex === index"
           class="answer-item"
         >
           <span>{{ letters[index] }}. </span>
@@ -60,7 +60,7 @@ export default {
 
 <style>
 .answer-item {
-  @apply w-full border-2 text-left border-white text-white cursor-pointer;
+  @apply py-2 lg:py-2.5 px-4 w-full border-2 text-left border-white text-white cursor-pointer disabled:pointer-events-none disabled:cursor-default;
 }
 .correct-answer {
   @apply bg-green-500;

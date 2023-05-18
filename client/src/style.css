@@ -32,7 +32,7 @@
   @apply bg-gray-600;
 }
 
-button {
+.base-button {
   @apply py-2 px-5 border rounded hover:bg-gray-100 active:bg-gray-200;
 }
 .base-input {

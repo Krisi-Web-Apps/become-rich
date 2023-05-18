@@ -15,8 +15,8 @@
     </template>
     <template v-slot:bottom>
       <div class="flex gap-2">
-        <button class="text-green-500 border-green-500" @click="handleSubmit">Потвърди</button>
-        <button class="text-red-500 border-red-500" @click="handleCancel">Отакз</button>
+        <button class="base-button text-green-500 border-green-500" @click="handleSubmit">Потвърди</button>
+        <button class="base-button text-red-500 border-red-500" @click="handleCancel">Отакз</button>
       </div>
     </template>
   </base-dialog>

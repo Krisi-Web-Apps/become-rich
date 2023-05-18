@@ -8,7 +8,7 @@
     </template>
     <template v-slot:bottom>
       <div class="flex gap-2 mt-5">
-        <button class="text-green-500 border-green-500" @click="handleNext">
+        <button class="base-button text-green-500 border-green-500" @click="handleNext">
           Продължи
         </button>
       </div>
