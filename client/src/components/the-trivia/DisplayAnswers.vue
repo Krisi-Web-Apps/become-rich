@@ -4,19 +4,19 @@
       <li
         v-for="(item, index) in props.answers"
         :key="index"
-        class="answer-item"
-        :class="
-          question.selectedAnswerIndex === index
-            ? question.additionalClass
-            : 'bg-primary/90'
-        "
-        :disabled="question.selectedAnswerIndex !== -1"
-        @click="() => selectAnswer(index)"
       >
-        <div>
+        <button
+          @click="() => selectAnswer(index)"
+          :class="
+            `${question.selectedAnswerIndex === index && `${question.additionalClass}`}
+            ${question.selectedAnswerIndex !== index && 'bg-primary/90 hover:bg-blue-600 active:bg-blue-800'}`
+          "
+          :disabled="question.selectedAnswerIndex !== -1"
+          class="answer-item"
+        >
           <span>{{ letters[index] }}. </span>
           {{ item.text }}
-        </div>
+        </button>
       </li>
     </ul>
   </div>
@@ -60,7 +60,7 @@ export default {
 
 <style>
 .answer-item {
-  @apply py-2.5 px-5 border-2 text-left border-white text-white hover:bg-blue-600 active:bg-blue-800 cursor-pointer;
+  @apply w-full border-2 text-left border-white text-white cursor-pointer;
 }
 .correct-answer {
   @apply bg-green-500;

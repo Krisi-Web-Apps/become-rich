@@ -71,6 +71,7 @@ export const useQuestionStore = defineStore("question", {
     currentQuestionIndex: -1,
     isStart: false,
     isEnd: false,
+    showTheFact: false,
     additionalClass: "",
     selectedAnswerIndex: -1,
     url: "/questions",
@@ -156,7 +157,7 @@ export const useQuestionStore = defineStore("question", {
 
       this.additionalClass = "correct-answer";
       setTimeout(() => {
-        this.getNextItem();
+        this.showTheFact = true;
         this.additionalClass = "";
         this.selectedAnswerIndex = -1;
       }, 1000);

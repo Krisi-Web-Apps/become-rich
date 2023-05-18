@@ -52,6 +52,9 @@
       <money-bar />
     </div>
   </div>
+  <transition name="fade">
+    <display-the-fact v-if="question.showTheFact" />
+  </transition>
 </template>
 
 <script>
@@ -72,6 +75,7 @@ import DisplayQuestion from "./DisplayQuestion.vue";
 import DisplayAnswers from "./DisplayAnswers.vue";
 import QuestionTimer from "./QuestionTimer.vue";
 import MoneyBar from "./MoneyBar.vue";
+import DisplayTheFact from "./DisplayTheFact.vue";
 
 export default {
   name: "TheTrivia",
@@ -80,6 +84,7 @@ export default {
     DisplayAnswers,
     QuestionTimer,
     MoneyBar,
+    DisplayTheFact,
   },
   computed: {
     getMoneyBarClass() {
