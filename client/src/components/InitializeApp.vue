@@ -1,6 +1,9 @@
 <template>
   <top-navbar-menu />
   <auth-wrapper />
+  <transition name="fade">
+    <profile-dialog v-if="env.dialogs.users.profile" />
+  </transition>
   <div class="w-full h-screen">
     <div class="w-full h-5/6 container">
       <transition name="fade">
@@ -33,6 +36,7 @@ import { useEnvStore } from "../stores/env";
 import TheTrivia from "../components/the-trivia/TheTrivia.vue";
 import TopNavbarMenu from "../components/navbars/TopNavbarMenu/TopNavbarMenu.vue";
 import AuthWrapper from "../components/auth/AuthWrapper.vue";
+import ProfileDialog from "./users/ProfileDialog.vue";
 
 export default {
   name: "InitializeApp",
@@ -40,7 +44,8 @@ export default {
     TheTrivia,
     TopNavbarMenu,
     AuthWrapper,
-  },
+    ProfileDialog,
+},
   setup() {
     const env = useEnvStore();
 
@@ -71,39 +76,5 @@ export default {
 }
 .text-animation {
   animation: text-animation 3000ms ease forwards;
-}
-@keyframes text-animation {
-  0% {
-    opacity: 0.5;
-    transform: scale(0);
-  }
-  20% {
-    opacity: 0.9;
-    transform: scale(0.9);
-  }
-  60% {
-    opacity: 0.92;
-    transform: scale(0.92);
-    transform: rotateZ(10deg);
-  }
-  70% {
-    opacity: 0.94;
-    transform: scale(0.94);
-    transform: rotateZ(-10deg);
-  }
-  80% {
-    opacity: 0.96;
-    transform: scale(0.96);
-    transform: rotateZ(10deg);
-  }
-  90% {
-    opacity: 0.98;
-    transform: scale(0.98);
-    transform: rotateZ(-10deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 </style>

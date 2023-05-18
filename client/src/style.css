@@ -38,3 +38,38 @@
 .base-input {
   @apply outline-none w-full border py-2 px-4 hover:border-gray-300 active:border-gray-400 focus:border-gray-400;
 }
+
+@keyframes text-animation {
+  0% {
+    opacity: 0.5;
+    transform: scale(0);
+  }
+  20% {
+    opacity: 0.9;
+    transform: scale(0.9);
+  }
+  60% {
+    opacity: 0.92;
+    transform: scale(0.92);
+    transform: rotateZ(10deg);
+  }
+  70% {
+    opacity: 0.94;
+    transform: scale(0.94);
+    transform: rotateZ(-10deg);
+  }
+  80% {
+    opacity: 0.96;
+    transform: scale(0.96);
+    transform: rotateZ(10deg);
+  }
+  90% {
+    opacity: 0.98;
+    transform: scale(0.98);
+    transform: rotateZ(-10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

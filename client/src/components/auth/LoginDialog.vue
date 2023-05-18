@@ -1,8 +1,8 @@
 <template>
-  <base-dialog class="h-[400px] overflow-y-scroll">
-    <template v-slot:header>Вхов</template>
-    <template v-slot:body>
-      <form>
+  <form @submit.prevent="handleSubmit">
+    <base-dialog class="h-[400px] overflow-y-scroll">
+      <template v-slot:header>Вхов</template>
+      <template v-slot:body>
         <div class="mb-5">
           <label for="email">Имейл Адрес</label>
           <input type="email" v-model="user.item.email" class="base-input">
@@ -11,15 +11,15 @@
           <label for="password">Парола</label>
           <input type="password" v-model="user.item.password" class="base-input">
         </div>
-      </form>
-    </template>
-    <template v-slot:bottom>
-      <div class="flex gap-2">
-        <button class="base-button text-green-500 border-green-500" @click="handleSubmit">Потвърди</button>
-        <button class="base-button text-red-500 border-red-500" @click="handleCancel">Отакз</button>
-      </div>
-    </template>
-  </base-dialog>
+      </template>
+      <template v-slot:bottom>
+        <div class="flex gap-2">
+          <button class="base-button text-green-500 border-green-500" :disabled="user.loading">Потвърди</button>
+          <button class="base-button text-red-500 border-red-500" :disabled="user.loading" @click="handleCancel">Отакз</button>
+        </div>
+      </template>
+    </base-dialog>
+  </form>
 </template>
 
 <script>

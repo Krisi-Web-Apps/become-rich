@@ -42,6 +42,9 @@ export default {
         },
         logout() {
           user.logout();
+        },
+        profile() {
+          env.dialogs.users.profile = true;
         }
       },
       handleOpen(func) {
