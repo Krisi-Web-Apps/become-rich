@@ -1,9 +1,7 @@
 <template>
   <top-navbar-menu />
   <auth-wrapper />
-  <transition name="fade">
-    <profile-dialog v-if="env.dialogs.users.profile" />
-  </transition>
+  <users-wrapper />
   <div class="w-full h-screen">
     <div class="w-full h-5/6 container">
       <transition name="fade">
@@ -36,7 +34,7 @@ import { useEnvStore } from "../stores/env";
 import TheTrivia from "../components/the-trivia/TheTrivia.vue";
 import TopNavbarMenu from "../components/navbars/TopNavbarMenu/TopNavbarMenu.vue";
 import AuthWrapper from "../components/auth/AuthWrapper.vue";
-import ProfileDialog from "./users/ProfileDialog.vue";
+import UsersWrapper from "./users/UsersWrapper.vue";
 
 export default {
   name: "InitializeApp",
@@ -44,7 +42,7 @@ export default {
     TheTrivia,
     TopNavbarMenu,
     AuthWrapper,
-    ProfileDialog,
+    UsersWrapper,
 },
   setup() {
     const env = useEnvStore();

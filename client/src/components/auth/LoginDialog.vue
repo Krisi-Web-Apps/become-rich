@@ -15,7 +15,7 @@
       <template v-slot:bottom>
         <div class="flex gap-2">
           <button class="base-button text-green-500 border-green-500" :disabled="user.loading">Потвърди</button>
-          <button class="base-button text-red-500 border-red-500" :disabled="user.loading" @click="handleCancel">Отакз</button>
+          <button type="button" class="base-button text-red-500 border-red-500" :disabled="user.loading" @click="handleCancel">Отакз</button>
         </div>
       </template>
     </base-dialog>

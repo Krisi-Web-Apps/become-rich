@@ -25,7 +25,7 @@
           <button class="base-button text-green-500 border-green-500" :disabled="user.loading">
             Потвърди
           </button>
-          <button class="base-button text-red-500 border-red-500" @click="handleCancel" :disabled="user.loading">
+          <button type="button" class="base-button text-red-500 border-red-500" @click="handleCancel" :disabled="user.loading">
             Отакз
           </button>
         </div>

@@ -15,6 +15,9 @@
       <li>
         <button class="base-button" @click="() => handleOpen('profile')">Профил</button>
       </li>
+      <li v-if="user.item.role_as === 'admin'">
+        <button class="base-button" @click="() => handleOpen('administration')">Администрация</button>
+      </li>
     </ul>
   </div>
 </template>
@@ -45,6 +48,9 @@ export default {
         },
         profile() {
           env.dialogs.users.profile = true;
+        },
+        administration() {
+          env.dialogs.users.administration = true;
         }
       },
       handleOpen(func) {

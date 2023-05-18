@@ -14,6 +14,7 @@ export const useEnvStore = defineStore("env", {
       },
       users: {
         profile: false,
+        administration: false,
       }
     },
     responsiveViews: {
