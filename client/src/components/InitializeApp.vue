@@ -15,10 +15,7 @@
         </div>
       </transition>
       <transition name="fade">
-        <div
-          v-if="env.screens.start === false && env.screens.theTrivia"
-          class="w-full h-full"
-        >
+        <div v-if="env.trivia.showTheWindow" class="w-full h-full">
           <the-trivia />
         </div>
       </transition>
@@ -46,23 +43,6 @@ export default {
   },
   setup() {
     const env = useEnvStore();
-
-    const functions = {
-      start() {
-        // hide the initial screen after 3 seconds
-        setTimeout(() => {
-          env.screens.start = false;
-
-          // show the trivia view after 1 second
-          setTimeout(() => {
-            env.screens.theTrivia = true;
-          }, 1000);
-        }, 3000);
-      },
-    };
-
-    functions.start();
-
     return { env };
   },
 };

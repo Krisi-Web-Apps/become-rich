@@ -130,29 +130,33 @@ export const useQuestionStore = defineStore("question", {
       timer.reset();
     },
     start() {
-      this.getRandomItems(() => {
-        this.getNextItem();
-        this.isStart = true;
-      });
+      const env = useEnvStore();
+      env.trivia.isStarted = true;
+      setTimeout(() => {
+        env.trivia.showQuestions = true;
+        this.getRandomItems(() => {
+          this.getNextItem();
+        });
+      }, 1000);
     },
     end() {
-      this.isEnd = true;
+      const env = useEnvStore();
+      env.trivia.isStarted = false;
       const timer = useQuestionTimerStore();
       timer.end();
-      const env = useEnvStore();
-      setTimeout(() => (env.screens.theEndTrivia = true), 1000);
+      setTimeout(() => (env.trivia.showQuestions = false), 1000);
+      setTimeout(() => (env.trivia.showTheEnd = true), 2000);
     },
     restartTrivia() {
       const env = useEnvStore();
       const moneyBar = useMoneyBarStore();
-      env.screens.theEndTrivia = false;
+      env.trivia.showTheEnd = false;
+      this.additionalClass = "";
+      this.selectedAnswerIndex = -1;
       moneyBar.earnedMoney = 0;
       this.currentQuestionIndex = -1;
-      setTimeout(() => {
-        this.isEnd = false;
-        env.screens.theTrivia = true;
-        this.start();
-      }, 1000);
+      env.trivia.showTheEnd = false;
+      this.start();
     },
     selectAnswer(index) {
       const timer = useQuestionTimerStore();
@@ -180,10 +184,8 @@ export const useQuestionStore = defineStore("question", {
     wrongAnswer() {
       this.additionalClass = "wrong-answer";
       setTimeout(() => {
-        this.additionalClass = "";
-        this.selectedAnswerIndex = -1;
-      }, 1000);
-      setTimeout(() => this.end(), 2000);
+        this.end();
+      }, 2000);
     },
   },
 });

@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import api from "../boot/axios";
 import { useEnvStore } from "./env";
 import { app } from "./../main";
+import { useQuestionStore } from "./question";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -90,6 +91,10 @@ export const useUserStore = defineStore("user", {
         .get(this.url)
         .then((res) => {
           this.item = res.data;
+          const question = useQuestionStore();
+          if (this.item.role_as !== "admin") {
+            
+          }
         })
         .catch((err) => {
           app.$toast.error("Изтекла сесия.");

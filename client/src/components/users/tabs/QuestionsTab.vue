@@ -1,6 +1,9 @@
 <template>
   <div class="mb-5">
-    <h2 class="text-xl mb-5">Въпроси</h2>
+    <div class="flex justify-between items-center mr-5">
+      <h2 class="text-xl mb-5">Въпроси</h2>
+      <button class="base-button" @click="handleOpen">Нов</button>
+    </div>
     <ul class="flex flex-col gap-2">
       <li
         v-for="(item, index) in question.items"
@@ -14,16 +17,26 @@
 </template>
 
 <script>
+// stores
+import { useEnvStore } from '../../../stores/env';
 import { useQuestionStore } from '../../../stores/question';
 
 export default {
   name: "QuestionsTab",
   setup() {
     const question = useQuestionStore();
+    const env = useEnvStore();
 
     question.getItems();
 
-    return { question }
+    const functions = {
+      handleOpen() {
+        question.item = { options: { } }
+        env.dialogs.questions.save = true;
+      }
+    }
+
+    return { question, ...functions }
   }
 };
 </script>

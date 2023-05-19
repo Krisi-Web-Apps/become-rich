@@ -12,13 +12,14 @@
       <div class="flex gap-2">
         <button
           class="base-button text-red-500 border-red-500"
-          @click="handleCancel"
+          @click="() => handleCancel()"
         >
           Затвори
         </button>
       </div>
     </template>
   </base-dialog>
+  <question-save-dialog v-if="env.dialogs.questions.save" />
 </template>
 
 <script>
@@ -30,6 +31,7 @@ import BaseDialog from "../dialogs/BaseDialog.vue";
 import TopMenu from "./TopMenu.vue";
 import UsersTab from "./tabs/UsersTab.vue";
 import QuestionsTab from "./tabs/QuestionsTab.vue";
+import QuestionSaveDialog from "./dialogs/QuestionSaveDialog.vue";
 
 export default {
   name: "AdministrationDialog",
@@ -38,6 +40,7 @@ export default {
     TopMenu,
     UsersTab,
     QuestionsTab,
+    QuestionSaveDialog,
 },
   setup() {
     const env = useEnvStore();

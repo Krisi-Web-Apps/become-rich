@@ -6,7 +6,7 @@
     >
       <transition-group name="fade">
         <div
-          v-if="question.item && question.isStart && question.isEnd === false"
+          v-if="env.trivia.showQuestions"
           class="relative w-full h-full flex flex-col justify-end pb-20"
         >
           <button
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div
-          v-else-if="env.screens.theEndTrivia"
+          v-else-if="env.trivia.showTheEnd"
           class="w-full h-full flex flex-col justify-center items-center"
         >
           <div
@@ -100,11 +100,6 @@ export default {
     const moneyBar = useMoneyBarStore();
 
     const functions = {
-      start(ms = 1000) {
-        setTimeout(() => {
-          question.start();
-        }, ms);
-      },
       getRandomImageUrl() {
         const randomIndex = Math.ceil(Math.random() * backgrounds.length) - 1;
         backgroundUrl.value = backgrounds[randomIndex];
@@ -112,8 +107,6 @@ export default {
     };
 
     functions.getRandomImageUrl();
-    
-    functions.start(1000);
 
     return { env, question, moneyBar, backgroundUrl };
   },

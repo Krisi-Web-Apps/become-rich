@@ -3,9 +3,15 @@ import { defineStore } from "pinia";
 export const useEnvStore = defineStore("env", {
   state: () => ({
     screens: {
-      start: true,
+      start: false,
       theTrivia: false,
       theEndTrivia: false,
+    },
+    trivia: {
+      showQuestions: false,
+      showTheEnd: false,
+      isStarted: false,
+      showTheWindow: false,
     },
     tabs: {
       admin: {
@@ -20,6 +26,9 @@ export const useEnvStore = defineStore("env", {
       users: {
         profile: false,
         administration: false,
+      },
+      questions: {
+        save: false,
       }
     },
     responsiveViews: {

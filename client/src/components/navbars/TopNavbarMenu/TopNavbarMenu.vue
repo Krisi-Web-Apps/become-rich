@@ -9,14 +9,20 @@
       </li>
     </ul>
     <ul v-if="user.isLoggedIn" class="flex gap-2 px-2">
-      <li>
+      <li v-if="!env.trivia.isStarted">
         <button class="base-button" @click="() => handleOpen('logout')">Изход</button>
       </li>
-      <li>
+      <li v-if="!env.trivia.isStarted">
         <button class="base-button" @click="() => handleOpen('profile')">Профил</button>
       </li>
-      <li v-if="user.item.role_as === 'admin'">
+      <li v-if="user.item.role_as === 'admin' && !env.trivia.isStarted">
         <button class="base-button" @click="() => handleOpen('administration')">Администрация</button>
+      </li>
+      <li v-if="!env.trivia.isStarted">
+        <button class="base-button" @click="() => handleOpen('play')">Играй</button>
+      </li>
+      <li v-if="env.trivia.isStarted">
+        <button class="base-button" @click="() => handleOpen('cancel')">Спри</button>
       </li>
     </ul>
   </div>
@@ -25,6 +31,7 @@
 <script>
 // stores
 import { useEnvStore } from "../../../stores/env";
+import { useQuestionStore } from "../../../stores/question";
 import { useUserStore } from "../../../stores/user";
 
 export default {
@@ -32,6 +39,7 @@ export default {
   setup() {
     const env = useEnvStore();
     const user = useUserStore();
+    const question = useQuestionStore();
 
     const functions = {
       open: {
@@ -51,6 +59,12 @@ export default {
         },
         administration() {
           env.dialogs.users.administration = true;
+        },
+        play() {
+          question.restartTrivia();
+        },
+        cancel() {
+          question.end();
         }
       },
       handleOpen(func) {
@@ -58,7 +72,7 @@ export default {
       },
     };
 
-    return { env, user, ...functions };
+    return { env, user, question, ...functions };
   },
 };
 </script>
