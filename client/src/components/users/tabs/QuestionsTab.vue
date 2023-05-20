@@ -10,7 +10,10 @@
         :key="index"
         class="py-2 px-4 hover:bg-gray-100"
       >
-        {{ item.title }}
+        <div class="flex justify-between">
+          <p>{{ item.title }}</p>
+          <button @click="() => handleEdit(item.id)">🧨</button>
+        </div>
       </li>
     </ul>
   </div>
@@ -31,8 +34,14 @@ export default {
 
     const functions = {
       handleOpen() {
-        question.item = { options: { } }
+        question.item = { options: { }, difficulty: "easy" }
         env.dialogs.questions.save = true;
+      },
+      handleEdit(id) {
+        question.item.id = id;
+        question.getItem(() => {
+          env.dialogs.questions.save = true;
+        });
       }
     }
 

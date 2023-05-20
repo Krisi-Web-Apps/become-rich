@@ -1,71 +1,14 @@
 import { defineStore } from "pinia";
-import { useEnvStore } from "./env";
-import api from "../boot/axios";
 
-export const useQuestionTimerStore = defineStore("questionTimer", {
-  state: () => ({
-    interval: null,
-    seconds: 30,
-  }),
-  actions: {
-    start() {
-      this.interval = setInterval(() => {
-        if (this.seconds <= 0) {
-          const question = useQuestionStore();
-          question.end();
-        }
-        this.seconds--;
-      }, 1000);
-    },
-    stop() {
-      clearInterval(this.interval);
-    },
-    reset() {
-      this.seconds = 30;
-      this.start();
-    },
-    end() {
-      clearInterval(this.interval);
-      this.interval = null;
-    },
-  },
-});
+// stores
+import { useEnvStore } from "../env";
+import { useUserStore } from "../user";
+import { useQuestionTimerStore, useMoneyBarStore } from "./";
 
-export const useMoneyBarStore = defineStore("moneyBar", {
-  state: () => ({
-    loading: false,
-    earnedMoney: 0,
-    items: [
-      { id: 1, money: 100 },
-      { id: 2, money: 200 },
-      { id: 3, money: 300 },
-      { id: 4, money: 500 },
-      { id: 5, money: 1000 },
-      { id: 6, money: 2000 },
-      { id: 7, money: 4000 },
-      { id: 8, money: 8000 },
-      { id: 9, money: 16000 },
-      { id: 10, money: 32000 },
-      { id: 11, money: 64000 },
-      { id: 12, money: 125000 },
-      { id: 13, money: 250000 },
-      { id: 14, money: 500000 },
-      { id: 15, money: 1000000 },
-    ],
-  }),
-  getters: {
-    getReversedItems: (state) => {
-      return state.items.reverse();
-    },
-  },
-  actions: {
-    calcMoney(index) {
-      this.earnedMoney = this.items.reverse()[index].money;
-    },
-  },
-});
+import api from "../../boot/axios";
+import { app } from "../../main";
 
-export const useQuestionStore = defineStore("question", {
+export default defineStore("question", {
   state: () => ({
     loading: false,
     currentQuestionIndex: -1,
@@ -89,9 +32,8 @@ export const useQuestionStore = defineStore("question", {
           cb();
         })
         .catch(err => {
-          if (err.response.data.message === "The limit must be a number!") {
-            console.log("Невалидно подадени данни.");
-          }
+          app.$toast.error("Сървърна грешка!");
+          this.end();
         })
         .finally(() => this.loading = false);
     },
@@ -109,14 +51,13 @@ export const useQuestionStore = defineStore("question", {
         .finally(() => this.loading = false);
     },
     getNextItem() {
-      this.correctAnimation = -1;
-
       // check if end question
       if (this.currentQuestionIndex + 1 >= this.items.length) {
         this.end();
         return;
       }
 
+      this.correctAnimation = -1;
       this.currentQuestionIndex++;
 
       // get next question
@@ -136,6 +77,7 @@ export const useQuestionStore = defineStore("question", {
         env.trivia.showQuestions = true;
         this.getRandomItems(() => {
           this.getNextItem();
+          app.$toast.success("Играта започна!");
         });
       }, 1000);
     },
@@ -146,6 +88,7 @@ export const useQuestionStore = defineStore("question", {
       timer.end();
       setTimeout(() => (env.trivia.showQuestions = false), 1000);
       setTimeout(() => (env.trivia.showTheEnd = true), 2000);
+      app.$toast.success("Играта свърши!");
     },
     restartTrivia() {
       const env = useEnvStore();
@@ -176,7 +119,8 @@ export const useQuestionStore = defineStore("question", {
 
       this.additionalClass = "correct-answer";
       setTimeout(() => {
-        this.showTheFact = true;
+        if (this.item.options.fact) this.showTheFact = true;
+        else this.getNextItem();
         this.additionalClass = "";
         this.selectedAnswerIndex = -1;
       }, 1000);
@@ -187,5 +131,45 @@ export const useQuestionStore = defineStore("question", {
         this.end();
       }, 2000);
     },
+    saveItem() {
+      this.loading = true;
+      api.post(`${this.url}/admin`, this.item)
+        .then(res => {
+          this.item = res.data;
+          app.$toast.success("Промените са запазени.");
+          const env = useEnvStore();
+          env.dialogs.questions.save = false;
+        })
+        .catch(err => {
+          if (err.response.data.message === "The id must be a number!")
+            app.$toast.error("Идентификатора трябва да бъде число.");
+          if (err.response.data.message === "Invalid id.")
+            app.$toast.error("Невалиден идентификатор.");
+        })
+        .finally(() => this.loading = false);
+    },
+    getItem(cb) {
+      this.loading = true;
+      api.get(`${this.url}/${this.item.id}`)
+        .then(res => {
+          this.item = res.data;
+          this.getItems();
+          cb();
+        })
+        .catch(err => {
+          if (err.response.data.message === "The id can not be null!")
+            app.$toast.error("Id не може да бъде null.");
+          if (err.response.data.message === "The id must be a number!")
+            app.$toast.error("Id трябва да бъде число.");
+          if (err.response.data.message === "Invalid id!")
+            app.$toast.error("Невалидно id.");
+          if (err.response.data.message === "Invalid token.") {
+            app.$toast.error("Изтекла сесия.");
+            const user = useUserStore();
+            user.logout();
+          }
+        })
+        .finally(() => this.loading = false);
+    }
   },
 });

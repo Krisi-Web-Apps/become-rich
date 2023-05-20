@@ -2,6 +2,9 @@
   <base-dialog>
     <template v-slot:header>Администрация</template>
     <template v-slot:body>
+      <transition name="fade">
+        <question-save-dialog v-if="env.dialogs.questions.save" />
+      </transition>
       <div class="h-[400px] overflow-y-scroll">
         <top-menu />
         <questions-tab v-if="env.tabs.admin.active === 'questions'" />
@@ -19,7 +22,6 @@
       </div>
     </template>
   </base-dialog>
-  <question-save-dialog v-if="env.dialogs.questions.save" />
 </template>
 
 <script>

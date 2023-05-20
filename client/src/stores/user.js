@@ -93,12 +93,14 @@ export const useUserStore = defineStore("user", {
           this.item = res.data;
           const question = useQuestionStore();
           if (this.item.role_as !== "admin") {
-            
+            question.restartTrivia();
           }
         })
         .catch((err) => {
+          const question = useQuestionStore();
           app.$toast.error("Изтекла сесия.");
           this.logout();
+          question.restartTrivia();
         })
         .finally(() => (this.loading = false));
     },
