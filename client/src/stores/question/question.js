@@ -136,9 +136,11 @@ export default defineStore("question", {
       api.post(`${this.url}/admin`, this.item)
         .then(res => {
           this.item = res.data;
+          console.log(this.item);
           app.$toast.success("Промените са запазени.");
           const env = useEnvStore();
           env.dialogs.questions.save = false;
+          this.getItems();
         })
         .catch(err => {
           if (err.response.data.message === "The id must be a number!")
@@ -168,6 +170,19 @@ export default defineStore("question", {
             const user = useUserStore();
             user.logout();
           }
+        })
+        .finally(() => this.loading = false);
+    },
+    deleteItem(cb) {
+      this.loading = true;
+      api.delete(`${this.url}/admin/${this.item.id}`)
+        .then(res => {
+          this.getItems();
+          cb();
+        }).catch(err => {
+          if (err.response.data.message === "The id can not be null!") app.$toast.error("Id не може да да бъде null.");
+          if (err.response.data.message === "The id must be a number!") app.$toast.error("Id трябва да бъде число.");
+          if (err.response.data.message === "Invalid id!") app.$toast.error("Невалидно id.");
         })
         .finally(() => this.loading = false);
     }

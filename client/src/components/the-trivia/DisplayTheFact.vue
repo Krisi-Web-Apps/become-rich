@@ -3,7 +3,7 @@
     <template v-slot:header>Интересен факт!</template>
     <template v-slot:body>
       <div class="max-h-[400px] overflow-y-scroll pr-5">
-        <p>{{ question.item.options.fact }}</p>
+        <div v-html="question.item.options.fact"></div>
       </div>
     </template>
     <template v-slot:bottom>

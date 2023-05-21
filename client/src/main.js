@@ -6,6 +6,8 @@ import "./style.css";
 import App from "./App.vue";
 import "vue-toast-notification/dist/theme-sugar.css";
 
+import CKEditor from '@ckeditor/ckeditor5-vue';
+
 const pinia = createPinia();
 
 export const app = createApp(App)
@@ -13,5 +15,6 @@ export const app = createApp(App)
     position: "bottom-right",
     pouseOnHover: true,
   })
+  .use(CKEditor)
   .use(pinia)
   .mount("#app");

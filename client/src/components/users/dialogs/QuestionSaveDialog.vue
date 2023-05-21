@@ -12,7 +12,7 @@
           </div>
           <div class="mb-5">
             <label for="fact">Интересен Факт</label>
-            <textarea v-model="question.item.options.fact" id="fact" class="base-input"></textarea>
+            <ckeditor :editor="editor" v-model="question.item.options.fact" :config="editorConfig"></ckeditor>
           </div>
           <div class="mb-5" v-for="(item, index) in question.item.options.answers" :key="index">
             <div class="mb-5">
@@ -59,17 +59,21 @@
 </template>
 
 <script>
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 // stores
 import { useEnvStore } from "../../../stores/env";
 import { useQuestionStore } from "../../../stores/question";
 
 // components
 import BaseDialog from "../../dialogs/BaseDialog.vue";
+import question from "../../../stores/question/question";
 
 export default {
   name: "QuestionSaveDialog",
   components: {
     BaseDialog,
+    ClassicEditor,
   },
   setup() {
     const question = useQuestionStore();
@@ -78,7 +82,7 @@ export default {
     const functions = {
       setupAnswersArray() {
         question.item.options.answers = [];
-        for(let i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
           question.item.options.answers.push({
             text: "",
             is_correct: false,
@@ -95,7 +99,23 @@ export default {
 
     if (!question.item.id) functions.setupAnswersArray();
 
-    return { question, ...functions };
+    return {
+      question,
+      ...functions,
+      editor: ClassicEditor,
+      editorConfig: {
+        plugins: ["Essentials", "Bold", "Italic", "Link", "Paragraph"],
+        toolbar: {
+          items: ["bold", "italic", "link", "undo", "redo"],
+        },
+      },
+    };
   },
 };
 </script>
+
+<style>
+.ck.ck-editor__main, .ck.ck-content.ck-editor__editable.ck-rounded-corners {
+  height: 400px;
+}
+</style>
