@@ -55,6 +55,7 @@
   <transition name="fade">
     <display-the-fact v-if="question.showTheFact" />
   </transition>
+  <loading-screen v-if="question.loading" />
 </template>
 
 <script>
@@ -76,6 +77,7 @@ import DisplayAnswers from "./DisplayAnswers.vue";
 import QuestionTimer from "./QuestionTimer.vue";
 import MoneyBar from "./MoneyBar.vue";
 import DisplayTheFact from "./DisplayTheFact.vue";
+import LoadingScreen from "../dialogs/LoadingScreen.vue";
 
 export default {
   name: "TheTrivia",
@@ -85,7 +87,8 @@ export default {
     QuestionTimer,
     MoneyBar,
     DisplayTheFact,
-  },
+    LoadingScreen
+},
   computed: {
     getMoneyBarClass() {
       return `${

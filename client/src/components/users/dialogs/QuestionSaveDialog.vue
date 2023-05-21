@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <base-dialog>
-      <template v-slot:header>
+    <template v-slot:header>
         {{ question.item.id ? "Редактиране на въпрос" : "Нов въпрос" }}
       </template>
       <template v-slot:body>
@@ -53,6 +53,7 @@
             Отакз
           </button>
         </div>
+        <loading-screen v-if="question.loading" />
       </template>
     </base-dialog>
   </form>
@@ -68,13 +69,15 @@ import { useQuestionStore } from "../../../stores/question";
 // components
 import BaseDialog from "../../dialogs/BaseDialog.vue";
 import question from "../../../stores/question/question";
+import LoadingScreen from "../../dialogs/LoadingScreen.vue";
 
 export default {
   name: "QuestionSaveDialog",
   components: {
     BaseDialog,
     ClassicEditor,
-  },
+    LoadingScreen,
+},
   setup() {
     const question = useQuestionStore();
     const env = useEnvStore();

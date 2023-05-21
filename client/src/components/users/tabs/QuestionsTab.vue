@@ -64,7 +64,7 @@ export default {
 
     const functions = {
       handleOpen() {
-        question.item = { options: { fact: {} }, difficulty: "easy" };
+        question.item = { options: {}, difficulty: "easy" };
         env.dialogs.questions.save = true;
       },
       handleEdit(id) {

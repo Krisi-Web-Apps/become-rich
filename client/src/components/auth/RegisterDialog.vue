@@ -56,6 +56,7 @@
           <button type="submit" class="base-button text-green-500 border-green-500" :disabled="user.loading">Потвърди</button>
           <button type="button" class="base-button text-red-500 border-red-500" :disabled="user.loading" @click="handleCancel">Отакз</button>
         </div>
+        <loading-screen v-if="user.loading" />
       </template>
     </base-dialog>
   </form>
@@ -68,11 +69,13 @@ import { useUserStore } from '../../stores/user';
 
 // components
 import BaseDialog from '../dialogs/BaseDialog.vue';
+import LoadingScreen from '../dialogs/LoadingScreen.vue';
 
 export default {
   name: "RegisterDialog",
   components: {
     BaseDialog,
+    LoadingScreen,
   },
   setup() {
     const env = useEnvStore();

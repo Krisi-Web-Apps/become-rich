@@ -40,7 +40,7 @@ export default {
     TopNavbarMenu,
     AuthWrapper,
     UsersWrapper,
-  },
+},
   setup() {
     const env = useEnvStore();
     return { env };
