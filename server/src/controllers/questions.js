@@ -8,7 +8,7 @@ const post = {
 
     if (!id) {
       const insertedResult = await questions.post.insert(
-        title.replace(/["'/\\]/g, '\\$&'),
+        String(title).replace(/["'/\\]/g, '\\$&'),
         JSON.stringify(options).replace(/["'/\\]/g, '\\$&'),
         category,
         difficulty
@@ -32,7 +32,7 @@ const post = {
 
       const updatedResult = await questions.post.update(
         id,
-        title.replace(/["'/\\]/g, '\\$&'),
+        String(title).replace(/["'/\\]/g, '\\$&'),
         JSON.stringify(options).replace(/["'/\\]/g, '\\$&'),
         category,
         difficulty
